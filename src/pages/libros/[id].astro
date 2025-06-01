@@ -1,0 +1,69 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+
+export async function getStaticPaths() {
+    // una funcion de astro que se utiliza para generar rutas estáticas para las páginas dinámicas. En este caso, se utiliza para generar rutas para cada libro en la colección de libros.
+    const books = await getCollection("books");
+    // obtiene la colección de libros utilizando la función getCollection. Esta función devuelve una lista de objetos que representan los libros en la colección.
+    return books.map((book) => ({
+        params: { id: book.slug },
+        props: { book }, // se pasa el libro como propiedad a la página. Esto permite que la página tenga acceso a los datos del libro correspondiente.
+    }));
+}
+
+const { book } = Astro.props;
+const { data, slug } = book; // se extraen los datos del libro de las propiedades pasadas a la página. Esto permite que la página tenga acceso a los datos del libro correspondiente.
+const { title, author, img, description, buy } = data; // se extraen los datos específicos del libro, como el título, autor, imagen, descripción y enlace de compra.
+// Estos datos se utilizan para mostrar la información del libro en la página.
+
+const { Content } = await render(book); // se utiliza la función render para procesar el contenido del libro. Esto permite que el contenido del libro se muestre correctamente en la página. La función render toma el libro como argumento y devuelve un objeto que contiene el contenido procesado.
+// El contenido procesado se almacena en la variable Content, que se utiliza más adelante para mostrar el contenido del libro en la página.
+---
+
+<Layout title={title}>
+    <div class="flex gap-12 p-30">
+        <aside class="flex flex-col items-center gap-4">
+            <a href="/" class="hover:underline opacity-70">← Volver atrás</a>
+            <h2 class="text-2xl font-bold mb-4">{author}</h2>
+            <p class="text-gray-700">{description}</p>
+            <aside class="flex flex-col items-center gap-4">
+                <img  
+                    transition:name={`img-${slug}`}
+                    src={img}
+                    alt={title}
+                />
+                <div class="relative group mt-4 flex flex-col items-center">
+                    <p
+                        class="cursor-pointer text-blue-700 font-semibold group-hover:underline z-20"
+                    >
+                        Comprar
+                    </p>
+                    <div
+                        class="absolute left-1/2 top-0 -translate-x-1/2 translate-y-0 flex flex-col items-center bg-white border border-gray-200 rounded shadow-lg opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity z-30 min-w-[100px] mt-0"
+                    >
+                        <a
+                            href={buy.usa}
+                            target="_blank"
+                            class="block px-4 py-2 text-blue-500 hover:bg-blue-50 w-full text-center"
+                            >Comprar USA</a
+                        >
+                        <a
+                            href={buy.argentina}
+                            target="_blank"
+                            class="block px-4 py-2 text-blue-500 hover:bg-blue-50 w-full text-center"
+                            >Comprar Argentina</a
+                        >
+                    </div>
+                </div>
+            </aside>
+
+            <main>
+                <h1 class="text-4xl font-bold mb-4">{title}</h1>
+                <div class="prose prose-gray dark:prose-invert">
+                    <Content />
+                </div>
+            </main>
+        </aside>
+    </div></Layout>

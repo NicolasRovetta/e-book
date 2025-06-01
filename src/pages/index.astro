@@ -1,11 +1,21 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+import BookSearch from "../components/BookSearch.jsx";
+import { getCollection } from "astro:content";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const books = await getCollection("books");
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="e-Books">
+    <main class="text-center p-10">
+        <h1 class="text-6xl">Bienvenido a e-Books &#128187;</h1><br /> 
+        <h2><strong>e-Books es una plataforma para compartir libros electrónicos.</strong></h2>
+        <p>Explora nuestra colección y descubre nuevos títulos.</p><br />
+    </main>
+
+    <section aria-label="Libros">
+        <div class="px-4 mx-auto max-w-screen-xl">
+            <BookSearch books={books} client:load />
+        </div>
+    </section>    
 </Layout>
