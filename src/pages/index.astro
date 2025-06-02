@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import BookSearch from "../components/BookSearch.jsx";
+import AtroposContainer from "../components/Atropos.jsx";
 import { getCollection } from "astro:content";
 
 const books = await getCollection("books");
@@ -8,14 +9,21 @@ const books = await getCollection("books");
 
 <Layout title="e-Books">
     <main class="text-center p-10">
-        <h1 class="text-6xl">Bienvenido a e-Books &#128187;</h1><br /> 
-        <h2><strong>e-Books es una plataforma para compartir libros electrónicos.</strong></h2>
-        <p>Explora nuestra colección y descubre nuevos títulos.</p><br />
+        <AtroposContainer client:load>
+            <>
+                <h1 class="text-6xl">Bienvenido a e-Books &#128187;</h1><br />
+                <h2>
+                    <strong>e-Books es una plataforma para compartir libros electrónicos.</strong>
+                </h2>
+                <p>Explora nuestra colección y descubre nuevos títulos.</p><br
+                />
+            </>
+        </AtroposContainer>
     </main>
 
     <section aria-label="Libros">
         <div class="px-4 mx-auto max-w-screen-xl">
             <BookSearch books={books} client:load />
         </div>
-    </section>    
+    </section>
 </Layout>
