@@ -1,5 +1,6 @@
 ---
 import { ClientRouter } from "astro:transitions";
+import Atropos from "../components/Atropos.jsx";
 ---
 
 <!doctype html>
@@ -14,9 +15,11 @@ import { ClientRouter } from "astro:transitions";
 		<ClientRouter />
 	</head>
 	<body>
-		<div>
-			<slot />
-		</div>
+		<Atropos className="w-full min-h-screen">
+			<div>
+				<slot />
+			</div>
+		</Atropos>
 	</body>
 </html>
 
@@ -24,7 +27,10 @@ import { ClientRouter } from "astro:transitions";
 	html {
 		min-height: auto;
 		font-family: system-ui, sans-serif;
-		background: #e0e7ef;
+		background-image: url('/background.png');
+		background-size:cover;
+		background-attachment: fixed;
+		background-position: center;
 		color: #333;
 	}
 
@@ -36,58 +42,6 @@ import { ClientRouter } from "astro:transitions";
 		@apply container;
 	}
 </style>
-<div class="shooting-stars">
-  <div class="shooting-star"></div>
-  <div class="shooting-star"></div>
-  <div class="shooting-star"></div>
-  <div class="shooting-star"></div>
-  <div class="shooting-star"></div>
-</div>
-<footer class="text-center m-10">
+<footer class="text-center m-10 text-black">
 	<p>&copy;DNR 2025 e-Books. Todos los derechos reservados.</p>
 </footer>
-
-<style>
-.shooting-stars {
-  pointer-events: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 10;
-}
-.shooting-star {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 60px;
-  height: 2px;
-  background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, #fff 60%, rgba(255,255,255,0.8) 80%, rgba(255,255,255,0) 100%);
-  opacity: 0.7;
-  border-radius: 50%;
-  filter: drop-shadow(0 0 8px #fff);
-  animation: shooting-diagonal 12s linear infinite;
-}
-/* Varias estrellas con diferentes delays y posiciones iniciales */
-.shooting-star:nth-child(1) { top: 0vh; left: 0vw; animation-delay: 0s; }
-.shooting-star:nth-child(2) { top: 10vh; left: -5vw; animation-delay: 2s; }
-.shooting-star:nth-child(3) { top: 20vh; left: -10vw; animation-delay: 4s; }
-.shooting-star:nth-child(4) { top: 30vh; left: -15vw; animation-delay: 6s; }
-.shooting-star:nth-child(5) { top: 40vh; left: -20vw; animation-delay: 8s; }
-
-@keyframes shooting-diagonal {
-  0% {
-    transform: translateX(0) translateY(0) rotate(45deg);
-    opacity: 1;
-  }
-  80% {
-    opacity: 1;
-    transform: translateX(100vw) translateY(100vh) rotate(45deg);
-  }
-  100% {
-    transform: translateX(110vw) translateY(110vh) rotate(45deg);
-    opacity: 0;
-  }
-}
-</style>
