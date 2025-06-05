@@ -257,32 +257,29 @@ useEffect(() => {
           </div>
         </button>
       )}
-      <div className="flex justify-end mb-4">
-        <button
-          onClick={handleToggleNotifications}
-          className={`flex items-center gap-2 px-3 py-1 rounded transition ${notificationsEnabled ? 'bg-green-200 text-green-900 hover:bg-green-300' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
-          aria-label={notificationsEnabled ? 'Desactivar notificaciones' : 'Activar notificaciones'}
-        >
-          {notificationsEnabled ? (
-            // Icono campana con barra (notificaciones desactivadas)
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-10 h-5">
-              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-              <path d="M18.63 13A17.89 17.89 0 0 1 18 8" />
-              <path d="M6.26 6.26A6 6 0 0 0 6 8c0 5-2 6-2 6h16" />
-              <path d="M18 8a6 6 0 0 0-9.33-5" />
-              <path d="M1 1l22 22" />
-            </svg>
-          ) : (
-            // Icono campana (notificaciones activadas)
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-10 h-5">
-              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-              <path d="M18 8a6 6 0 0 0-12 0c0-3.31 2.69-6 6-6s6 2.69 6 6z" />
-              <path d="M6 8v5c0 1.1-.9 2-2 2h16c-1.1 0-2-.9-2-2V8" />
-            </svg>
-          )}
-          {notificationsEnabled ? '' : ''}
-        </button>
-      </div>
+      <button
+        onClick={handleToggleNotifications}
+        className={`fixed top-4 right-4 flex items-center gap-2 px-3 py-1 rounded transition z-50 shadow-lg ${notificationsEnabled ? 'bg-red-200 text-black hover:bg-red-300' : 'bg-green-200 text-black hover:bg-green-300'}`}
+        aria-label={notificationsEnabled ? 'Desactivar notificaciones' : 'Activar notificaciones'}
+      ><p>notificaciones</p>
+        {notificationsEnabled ? (
+          // Icono campana con barra (notificaciones desactivadas)
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-10 h-5">
+           <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+            <path d="M18 8a6 6 0 0 0-12 0c0-3.31 2.69-6 6-6s6 2.69 6 6z" />
+            <path d="M6 8v5c0 1.1-.9 2-2 2h16c-1.1 0-2-.9-2-2V8" />
+          </svg>
+        ) : (
+          // Icono campana (notificaciones activadas)
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-10 h-5">
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+            <path d="M18.63 13A17.89 17.89 0 0 1 18 8" />
+            <path d="M6.26 6.26A6 6 0 0 0 6 8c0 5-2 6-2 6h16" />
+            <path d="M18 8a6 6 0 0 0-9.33-5" />
+            <path d="M1 1l22 22" />
+          </svg>
+        )}
+      </button>
       <div className="mb-5 h-90 grid gap-6 grid-cols-1 md:grid-cols-2">
         {!selectedBook && booksToShow.map((book) => {
           const { slug, data } = book;
