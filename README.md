@@ -1,48 +1,80 @@
-# Astro Starter Kit: Basics
 
-```sh
-pnpm create astro@latest -- --template basics
-```
+# e-Books: Plataforma de Libros Electrónicos
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+¡Bienvenido a **e-Books**! Este proyecto es una plataforma web moderna para explorar, buscar y compartir libros electrónicos, desarrollada con [Astro](https://astro.build/), React y TailwindCSS.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+---
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+## 🚀 Enfoque del sitio
 
-## 🚀 Project Structure
+- **Seguridad ante todo:**
+  - Sanitización automática de contenido Markdown para evitar XSS.
+  - Validación de enlaces externos (solo dominios de confianza como Amazon y Mercado Libre).
+  - Solo se permiten imágenes locales para proteger la privacidad y evitar contenido malicioso.
 
-Inside of your Astro project, you'll see the following folders and files:
+- **Experiencia de usuario:**
+  - Búsqueda inteligente de libros con sugerencias.
+  - Lectura de descripciones en voz alta (Web Speech API).
+  - Notificaciones para mejorar la interacción.
+
+- **Diseño moderno:**
+  - Interfaz responsiva y atractiva con TailwindCSS y efectos visuales.
+
+---
+
+## 🛠️ Tecnologías y librerías utilizadas
+
+- **Astro**: Framework principal para el sitio estático y SSR.
+- **React**: Componentes interactivos (búsqueda, efectos, etc).
+- **TailwindCSS**: Estilos rápidos y modernos.
+- **react-markdown**: Renderizado seguro de contenido Markdown.
+- **rehype-sanitize**: Sanitización de HTML generado desde Markdown.
+
+### Instalaciones clave
+
+- `pnpm add react-markdown rehype-sanitize`
+- `pnpm add -D tailwindcss @tailwindcss/typography`
+
+---
+
+## 📦 Estructura del proyecto
 
 ```text
 /
-├── public/
-│   └── favicon.svg
+├── public/           # Imágenes y recursos estáticos
 ├── src/
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
+│   ├── components/   # Componentes React (BookSearch, Atropos, etc)
+│   ├── content/      # Libros en formato Markdown
+│   ├── layouts/      # Layouts Astro
+│   └── pages/        # Páginas Astro
+├── tailwind.config.js
+├── astro.config.mjs
 └── package.json
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+---
 
-## 🧞 Commands
+## 🧑‍💻 Comandos útiles
 
-All commands are run from the root of the project, from a terminal:
+| Comando            | Acción                                      |
+|--------------------|---------------------------------------------|
+| `pnpm install`     | Instala las dependencias                    |
+| `pnpm dev`         | Inicia el servidor de desarrollo            |
+| `pnpm build`       | Genera la versión de producción             |
+| `pnpm preview`     | Previsualiza el sitio antes de desplegar    |
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+---
 
-## 👀 Want to learn more?
+## 📚 ¿Cómo agregar libros?
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Agrega archivos `.md` en `src/content/books/` siguiendo el esquema de los ejemplos existentes. El contenido se mostrará automáticamente en la plataforma.
+
+---
+
+## 🌐 Más información
+
+- [Documentación de Astro](https://docs.astro.build)
+- [TailwindCSS](https://tailwindcss.com/)
+- [React Markdown](https://github.com/remarkjs/react-markdown)
+
+¡Esperamos que disfrutes explorando y compartiendo libros en e-Books! 🚀
