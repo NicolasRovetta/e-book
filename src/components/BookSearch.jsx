@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
+import rehypeSanitize from "rehype-sanitize";
 
 export default function BookSearch({ books }) {
   const [search, setSearch] = useState("");
@@ -120,6 +121,28 @@ useEffect(() => {
     }
   };
 
+  // Función para validar dominios de confianza en los enlaces de compra
+  function isTrustedUrl(url) {
+    try {
+      const trustedDomains = [
+        "amazon.com",
+        "mercadolibre.com",
+        "mercadolibre.com.ar"
+        // agrega más dominios de confianza aquí si lo necesitas
+      ];
+      const parsed = new URL(url);
+      return trustedDomains.some(domain => parsed.hostname.endsWith(domain));
+    } catch {
+      return false;
+    }
+  }
+
+  // Función para validar rutas de imágenes seguras (solo locales)
+  function isTrustedImage(src) {
+    // Permite solo rutas que empiezan con "/" (carpeta pública del proyecto)
+    return typeof src === "string" && src.startsWith("/");
+  }
+
   return (
     <>
       <div className="relative w-full max-w-md mx-auto mb-6">
@@ -156,12 +179,14 @@ useEffect(() => {
           </button>
           <div className="flex flex-col md:flex-row gap-8 mt-4 items-start md:items-center">
             <div className="flex-shrink-0 flex justify-center w-full md:w-auto">
-              <img
-                src={selectedBook.data.img}
-                alt={selectedBook.data.title}
-                className="w-56 h-auto max-h-80 object-contain rounded-xl shadow-lg bg-white p-2"
-                style={{ boxShadow: '0 4px 24px 0 rgba(0,0,0,0.10)' }}
-              />
+              {isTrustedImage(selectedBook.data.img) && (
+                <img
+                  src={selectedBook.data.img}
+                  alt={selectedBook.data.title}
+                  className="w-56 h-auto max-h-80 object-contain rounded-xl shadow-lg bg-white p-2"
+                  style={{ boxShadow: '0 4px 24px 0 rgba(0,0,0,0.10)' }}
+                />
+              )}
             </div>
             <div className="flex flex-col justify-center w-full">
               <h1 className="text-3xl font-bold mb-2 text-black">{selectedBook.data.title}</h1>
@@ -187,27 +212,31 @@ useEffect(() => {
               </button>
               {selectedBook.data.buy && (
                 <div className="flex gap-4 mt-2">
-                  <a
-                    href={selectedBook.data.buy.usa}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-4 py-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition"
-                  >
-                    Comprar USA
-                  </a>
-                  <a
-                    href={selectedBook.data.buy.argentina}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-4 py-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition"
-                  >
-                    Comprar Argentina
-                  </a>
+                  {isTrustedUrl(selectedBook.data.buy.usa) && (
+                    <a
+                      href={selectedBook.data.buy.usa}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition"
+                    >
+                      Comprar USA
+                    </a>
+                  )}
+                  {isTrustedUrl(selectedBook.data.buy.argentina) && (
+                    <a
+                      href={selectedBook.data.buy.argentina}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition"
+                    >
+                      Comprar Argentina
+                    </a>
+                  )}
                 </div>
               )}
               {selectedBook.body && (
                 <div className="prose prose-gray dark:prose-invert mt-6 text-black">
-                  <ReactMarkdown>{selectedBook.body}</ReactMarkdown>
+                  <ReactMarkdown rehypePlugins={[rehypeSanitize]}>{selectedBook.body}</ReactMarkdown>
                 </div>
               )}
             </div>
@@ -225,11 +254,13 @@ useEffect(() => {
             <strong className="text-black">¿Quizás buscabas este libro?</strong>
           </p>
           <div className="flex mt-2">
-            <img
-              src={suggestion.data.img}
-              alt={suggestion.data.title}
-              className="w-24 h-32 object-cover rounded mr-4"
-            />
+            {isTrustedImage(suggestion.data.img) && (
+              <img
+                src={suggestion.data.img}
+                alt={suggestion.data.title}
+                className="w-24 h-32 object-cover rounded mr-4"
+              />
+            )}
             <div>
               <h2 className="text-lg font-bold text-black">{suggestion.data.title}</h2>
               <p className="text-black">{suggestion.data.description}</p>
@@ -291,11 +322,13 @@ useEffect(() => {
                 className="mb-2 xl:mb-0 focus:outline-none transition hover:scale-110"
                 onClick={() => setSelectedBook(book)}
               >
-                <img
-                  className={`mr-5 w-48 rounded-lg transition-transform duration-500 ${selectedBook ? "scale-110" : ""}`}
-                  src={img}
-                  alt={title}
-                />
+                {isTrustedImage(img) && (
+                  <img
+                    className={`mr-5 w-48 rounded-lg transition-transform duration-500 ${selectedBook ? "scale-110" : ""}`}
+                    src={img}
+                    alt={title}
+                  />
+                )}
               </button>
               <div className="flex flex-col justify-center">
                 <h2 className="text-xl font-bold">{title}</h2>
