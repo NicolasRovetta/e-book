@@ -139,8 +139,8 @@ useEffect(() => {
 
   // Función para validar rutas de imágenes seguras (solo locales)
   function isTrustedImage(src) {
-    // Permite solo rutas que empiezan con "/" (carpeta pública del proyecto)
-    return typeof src === "string" && src.startsWith("/");
+    // Permite solo rutas que empiezan con "/e-book/" (carpeta pública del proyecto)
+    return typeof src === "string" && src.startsWith("/e-book/");
   }
 
   return (

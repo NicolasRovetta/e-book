@@ -3,7 +3,7 @@ title: Filosofía para todos los días
 author: Tania Sánchez
 gender: Filosofia
 description:  Es un libro que invita a redescubrir el misterio, el sentido y la alegría de lo cotidiano de la mano de los grandes filósofos de siempre.
-img: /filosofiaParaTodosLosDias.png
+img: /e-book/filosofiaParaTodosLosDias.png
 buy:
    argentina: https://articulo.mercadolibre.com.ar/MLA-1486938111-libro-filosofia-para-todos-los-dias-tania-sanchez-_JM
    usa: https://www.amazon.com/-/es/Tania-S%C3%A1nchez-ebook/dp/B0DTTG7D7B

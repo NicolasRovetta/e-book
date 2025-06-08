@@ -3,7 +3,7 @@ title: Habitos atómicos
 author: James Clear
 gender: autoayuda
 description:  Hábitos atómicos es un libro que explica cómo construir buenos hábitos y romper los malos a través de pequeños cambios, como los que se realizan en la escala de un átomo.
-img: /habitosAtomicos.png
+img: /e-book/habitosAtomicos.png
 buy:
     argentina: https://www.mercadolibre.com.ar/habitos-atomicos-james-clear-editorial-booket/p/MLA21937914#polycard_client=search-nordic&searchVariation=MLA21937914&wid=MLA1468368975&position=7&search_layout=stack&type=product&tracking_id=7c25738d-23b7-4af0-a27f-b6632ddcd42f&sid=search
     usa: https://www.amazon.com/-/es/dp/B07RFSSYBH/ref=sr_1_1?adgrpid=171370943674&dib=eyJ2IjoiMSJ9.mOso7EVHHwSAUXVlgxo53zuSvnTwjXjJ5gb0JFKbRGlVJ1qtBNvYfiDtWcmiATXw5ofTbyvFle0cTWDDwyu5X0fO_cE9KEgwGRk4c3AbIWVQItidEfpCsLq9asXbd3QI--W9vpFrSp5BCOabMDD9P7XrbUfi_bigjj9kQlXdShZlWZ15vEFWyGsYp8BcLD2vj2tY_Fe0MH6VKH6PqmanXN41bm7K-J9oygCoN411i98.oJcqfpdh0DMXgPAx7qzJxf1XwmMOgTEX2NpEbKNKJqU&dib_tag=se&hvadid=715675451886&hvdev=c&hvlocphy=1000041&hvnetw=g&hvqmt=b&hvrand=7682097343593799812&hvtargid=kwd-489907855631&hydadcr=11039_13721648&keywords=atomic+habits+james+clear&mcid=9c44749217ba3febaa062ec13abaca42&qid=1747612501&sr=8-1

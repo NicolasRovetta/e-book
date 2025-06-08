@@ -1,17 +1,19 @@
 ---
 import { ClientRouter } from "astro:transitions";
 import Atropos from "../components/Atropos.jsx";
+import "../styles/global.css";
 ---
+
 
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/png" href="/faviconbook.png" />
+		<link rel="icon" type="image/png" href="/e-book/faviconbook.png" />
 		<meta name="generator" content={Astro.generator} />
 		<title>e-Books</title>
-		<link rel="stylesheet" href="/src/styles/global.css" />
+		<link rel="stylesheet" href="/e-book/src/styles/global.css" />
 		<ClientRouter />
 	</head>
 	<body>

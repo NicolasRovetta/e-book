@@ -3,7 +3,7 @@ title: El arte de la guerra
 author: Sun Tzu
 gender: Tratado de táctica militar
 description: El Arte de la Guerra, obra de Sun Tzu, es un tratado militar chino sobre estrategia y tácticas bélicas, que también se aplica a la vida cotidiana y los negocios.
-img: /ElArteDeLaGuerra.png
+img: /e-book/ElArteDeLaGuerra.png
 buy:
    argentina: https://listado.mercadolibre.com.ar/el-arte-de-la-guerra%2C
    usa: https://www.amazon.com/s?k=el+arte+de+la+guerra&language=es_US&adgrpid=169969801590&hvadid=709957087662&hvdev=c&hvlocphy=1000041&hvnetw=g&hvqmt=e&hvrand=14404705686038764200&hvtargid=kwd-342957785&hydadcr=27855_14785220&mcid=860c456e8ae73bfb9761b19594a8ce04&tag=txscdpesrow-20&ref=pd_sl_551izep043_e
