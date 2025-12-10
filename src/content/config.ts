@@ -7,6 +7,7 @@ export const books = defineCollection({
     schema: z.object({
         title: z.string(),
         author: z.string(),
+        gender: z.string().optional(),
         description: z.string(),
         img: z.string(),
         buy: z.object({

@@ -1,28 +1,30 @@
 ---
+import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import BookSearch from "../components/BookSearch.jsx";
-import AtroposContainer from "../components/Atropos.jsx";
-import { getCollection } from "astro:content";
+import Hero from "../components/Hero.jsx";
+import LibraryHeader from "../components/LibraryHeader.jsx";
 
 const books = await getCollection("books");
 ---
 
-<Layout title="e-Books">
-    <main class="text-center p-10 w-max mx-auto">
-        <AtroposContainer client:load>
-            <>
-                <h1 class="text-6xl">Bienvenido a e-Books </h1><br />
-                <h2>
-                    <strong>e-Books es una plataforma para compartir libros electrónicos.</strong>
-                </h2>
-                <p>Explora nuestra colección y descubre nuevos títulos.</p><br
-                />
-            </AtroposContainer>
-        </AtroposContainer>
-    </main>
+<Layout>
+    <div class="relative min-h-[60vh] flex flex-col items-center justify-center pt-32 pb-20 overflow-hidden">
+        
+        {/* Background Gradients */}
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl pointer-events-none opacity-30">
+            <div class="absolute top-20 left-20 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
+            <div class="absolute top-20 right-20 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"></div>
+            <div class="absolute -bottom-8 left-1/2 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000"></div>
+        </div>
 
-    <section aria-label="Libros">
-        <div class="px-4 mx-auto max-w-screen-xl">
+        <Hero client:load />
+    </div>
+
+    <section aria-label="Catálogo de Libros" class="relative z-10 pb-20">
+        <div class="px-4 mx-auto max-w-screen-2xl">
+            <LibraryHeader client:load />
+            
             <BookSearch books={books} client:load />
         </div>
     </section>

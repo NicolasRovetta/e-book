@@ -6,12 +6,16 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "@nanostores/react": "^1.0.0",
     "@types/react": "^19.1.6",
     "@types/react-dom": "^19.1.5",
     "atropos": "^2.0.2",
+    "nanostores": "^1.1.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-markdown": "^10.1.0",
@@ -22,6 +26,7 @@
     "@astrojs/react": "^4.3.0",
     "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.1.7",
-    "astro": "5.0.0-beta.12"
+    "astro": "5.0.0-beta.12",
+    "gh-pages": "^6.3.0"
   }
 }
