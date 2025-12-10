@@ -1,29 +1,49 @@
 import React, { useState, useEffect } from "react";
 import BookCard from "./BookCard";
 import BookDetailModal from "./BookDetailModal";
+import SerendipityButton from "./SerendipityButton";
+import VibeFilters, { getVibeKeywords } from "./VibeFilters";
+import CoverFlowView from "./CoverFlowView";
 import { useStore } from '@nanostores/react';
 import { lang, translations } from "../store";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function BookSearch({ books }) {
     const $lang = useStore(lang);
     const t = translations[$lang] || translations.es;
 
     const [search, setSearch] = useState("");
+    const [selectedVibe, setSelectedVibe] = useState('all');
+    const [viewMode, setViewMode] = useState('grid'); // 'grid' | 'coverflow'
     const [suggestion, setSuggestion] = useState(null);
     const [selectedBook, setSelectedBook] = useState(null);
     const [notificationsEnabled, setNotificationsEnabled] = useState(false);
 
+    // Advanced Filtering Logic
     const filteredBooks = Array.isArray(books)
         ? books.filter((book) => {
-            const { title, author, description } = book.data;
+            const { title, author, description, gender } = book.data;
             const body = book.body || "";
             const query = search.toLowerCase();
-            return (
+
+            // 1. Keyword Search
+            const matchesSearch =
+                query === "" ||
                 title.toLowerCase().includes(query) ||
                 author.toLowerCase().includes(query) ||
                 description.toLowerCase().includes(query) ||
-                body.toLowerCase().includes(query)
-            );
+                body.toLowerCase().includes(query);
+
+            if (!matchesSearch) return false;
+
+            // 2. Vibe/Mood Filtering
+            if (selectedVibe === 'all') return true;
+
+            const keywords = getVibeKeywords(selectedVibe);
+            const combinedText = `${title} ${author} ${description} ${gender || ''} ${body}`.toLowerCase();
+
+            // Check if ANY of the vibe keywords exist in the book text
+            return keywords.some(k => combinedText.includes(k.toLowerCase()));
         })
         : [];
 
@@ -108,66 +128,110 @@ export default function BookSearch({ books }) {
         }
     };
 
+    const handleSerendipitySelect = (book) => {
+        setSelectedBook(book);
+    };
+
     return (
         <>
-            <div className="flex flex-col md:flex-row items-center gap-4 mb-10 w-full max-w-3xl mx-auto">
-                <div className="relative w-full group">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <svg className="h-5 w-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
-                        </svg>
+            <div className="flex flex-col gap-6 mb-10 w-full max-w-5xl mx-auto">
+                {/* Search Bar & Actions */}
+                <div className="flex flex-col md:flex-row items-center gap-4 w-full">
+                    <div className="relative w-full group">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg className="h-5 w-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
+                            </svg>
+                        </div>
+                        <input
+                            type="text"
+                            placeholder={t.searchPlaceholder}
+                            className="block w-full pl-10 pr-10 py-4 border border-white/10 rounded-xl leading-5 bg-slate-800/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-slate-800/80 transition-all shadow-lg backdrop-blur-sm"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                        />
+                        {search && (
+                            <button
+                                type="button"
+                                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-white"
+                                onClick={() => setSearch("")}
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                                </svg>
+                            </button>
+                        )}
                     </div>
-                    <input
-                        type="text"
-                        placeholder={t.searchPlaceholder}
-                        className="block w-full pl-10 pr-10 py-4 border border-white/10 rounded-xl leading-5 bg-slate-800/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-slate-800/80 transition-all shadow-lg backdrop-blur-sm"
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                    />
-                    {search && (
+
+                    <div className="flex gap-2 shrink-0">
+                        <SerendipityButton books={books} onSelect={handleSerendipitySelect} />
+
                         <button
-                            type="button"
-                            className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-white"
-                            onClick={() => setSearch("")}
+                            onClick={() => setViewMode(viewMode === 'grid' ? 'coverflow' : 'grid')}
+                            className="p-3 rounded-full bg-slate-800/50 hover:bg-slate-700 text-white border border-white/10 transition-colors"
+                            title={viewMode === 'grid' ? t.coverFlowView : t.gridView}
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                            {viewMode === 'grid' ? (
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                </svg>
+                            ) : (
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                                </svg>
+                            )}
+                        </button>
+
+                        <button
+                            onClick={handleToggleNotifications}
+                            className={`p-3 rounded-full transition-all border border-white/10 ${notificationsEnabled
+                                ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/30'
+                                : 'bg-slate-800/50 hover:bg-slate-700 text-gray-400 hover:text-white'
+                                }`}
+                            title={notificationsEnabled ? t.disableNotifications : t.enableNotifications}
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                             </svg>
                         </button>
-                    )}
+                    </div>
                 </div>
 
-                <button
-                    onClick={handleToggleNotifications}
-                    className={`flex-shrink-0 p-4 rounded-xl transition-all shadow-lg border border-white/10 ${notificationsEnabled
-                            ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-blue-500/30'
-                            : 'bg-slate-800/50 hover:bg-slate-700/80 text-gray-400 hover:text-white'
-                        }`}
-                    title={notificationsEnabled ? t.disableNotifications : t.enableNotifications}
-                >
-                    {notificationsEnabled ? (
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                        </svg>
-                    ) : (
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4l16 16" />
-                        </svg>
-                    )}
-                </button>
+                {/* Vibe Filters */}
+                <VibeFilters selectedVibe={selectedVibe} onSelectVibe={setSelectedVibe} />
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-                {filteredBooks.map((book) => (
-                    <BookCard
-                        key={book.slug}
-                        book={book}
-                        onClick={setSelectedBook}
-                    />
-                ))}
-            </div>
+            {/* Results Display */}
+            <AnimatePresence mode='wait'>
+                {viewMode === 'grid' ? (
+                    <motion.div
+                        key="grid"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6"
+                    >
+                        {filteredBooks.map((book) => (
+                            <BookCard
+                                key={book.slug}
+                                book={book}
+                                onClick={setSelectedBook}
+                            />
+                        ))}
+                    </motion.div>
+                ) : (
+                    <motion.div
+                        key="coverflow"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                    >
+                        <CoverFlowView books={filteredBooks} onBookClick={setSelectedBook} />
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
+            {/* No Results & Suggestions */}
             {filteredBooks.length === 0 && (
                 <div className="text-center py-20 animate-in fade-in duration-500">
                     {suggestion ? (
@@ -179,9 +243,7 @@ export default function BookSearch({ books }) {
                         </div>
                     ) : (
                         <div className="flex flex-col items-center justify-center text-gray-500">
-                            <svg className="w-16 h-16 mb-4 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                            </svg>
+                            <span className="text-6xl mb-4">😶‍🌫️</span>
                             <p className="text-xl font-medium">{t.noResults}</p>
                             <p className="text-sm">{t.tryAgain}</p>
                         </div>

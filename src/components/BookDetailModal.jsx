@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import ReactMarkdown from "react-markdown";
 import rehypeSanitize from "rehype-sanitize";
 import { useStore } from '@nanostores/react';
@@ -7,6 +8,12 @@ import { lang, translations } from "../store";
 export default function BookDetailModal({ book, onClose }) {
     const $lang = useStore(lang);
     const t = translations[$lang] || translations.es;
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+        return () => setMounted(false);
+    }, []);
 
     if (!book) return null;
 
@@ -50,8 +57,8 @@ export default function BookDetailModal({ book, onClose }) {
         }
     };
 
-    return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    const modalContent = (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
             <div
                 className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
                 onClick={onClose}
@@ -119,4 +126,6 @@ export default function BookDetailModal({ book, onClose }) {
             </div>
         </div>
     );
+
+    return mounted ? createPortal(modalContent, document.body) : null;
 }
