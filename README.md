@@ -1,80 +1,76 @@
+# 📚 e-Books: Next-Gen Library Experience
 
-# e-Books: Plataforma de Libros Electrónicos
+![Project Banner](https://img.shields.io/badge/Status-Active-success?style=for-the-badge) ![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
 
-¡Bienvenido a **e-Books**! Este proyecto es una plataforma web moderna para explorar, buscar y compartir libros electrónicos, desarrollada con [Astro](https://astro.build/), React y TailwindCSS.
+> **Una plataforma de descubrimiento de libros re-imaginada.**  
+> Combinando rendimiento estático con interactividad avanzada para crear una experiencia de usuario única y memorable.
 
----
-
-## 🚀 Enfoque del sitio
-
-- **Seguridad ante todo:**
-  - Sanitización automática de contenido Markdown para evitar XSS.
-  - Validación de enlaces externos (solo dominios de confianza como Amazon y Mercado Libre).
-  - Solo se permiten imágenes locales para proteger la privacidad y evitar contenido malicioso.
-
-- **Experiencia de usuario:**
-  - Búsqueda inteligente de libros con sugerencias.
-  - Lectura de descripciones en voz alta (Web Speech API).
-  - Notificaciones para mejorar la interacción.
-
-- **Diseño moderno:**
-  - Interfaz responsiva y atractiva con TailwindCSS y efectos visuales.
+🔗 **[Ver Demo en Vivo](https://nicolasrovetta.github.io/e-book/)**
 
 ---
 
-## 🛠️ Tecnologías y librerías utilizadas
+## ✨ Características Destacadas ("The WOW Factor")
 
-- **Astro**: Framework principal para el sitio estático y SSR.
-- **React**: Componentes interactivos (búsqueda, efectos, etc).
-- **TailwindCSS**: Estilos rápidos y modernos.
-- **react-markdown**: Renderizado seguro de contenido Markdown.
-- **rehype-sanitize**: Sanitización de HTML generado desde Markdown.
+Este no es otro catálogo de libros estático. He implementado características avanzadas de UI/UX para diferenciar la experiencia:
 
-### Instalaciones clave
+### 🎲 Modo Serendipia
+¿Indeciso? Un sistema interactivo que selecciona un libro al azar por ti, con animaciones de carga y celebración para gamificar el descubrimiento.
 
-- `pnpm add react-markdown rehype-sanitize`
-- `pnpm add -D tailwindcss @tailwindcss/typography`
+### 🧠 Filtros por "Vibes" (Análisis de Sentimiento)
+Abandonamos los géneros tradicionales. Un motor de filtrado basado en palabras clave semánticas permite buscar libros por estado de ánimo:
+- 🤯 **Explota Cabezas** (Futuro, Ciencia)
+- 🧘‍♂️ **Zen / Profundo** (Filosofía)
+- 🌑 **Oscuro** (Thriller, Terror)
+
+### 🌌 Vista 3D CoverFlow
+Interactividad inmersiva con **SwiperJS** y **Framer Motion**. Los usuarios pueden alternar entre una grilla eficiente y una vista de carrusel 3D cinematográfica.
 
 ---
 
-## 📦 Estructura del proyecto
+## 🛠️ Tech Stack & Arquitectura
 
-```text
-/
-├── public/           # Imágenes y recursos estáticos
-├── src/
-│   ├── components/   # Componentes React (BookSearch, Atropos, etc)
-│   ├── content/      # Libros en formato Markdown
-│   ├── layouts/      # Layouts Astro
-│   └── pages/        # Páginas Astro
-├── tailwind.config.js
-├── astro.config.mjs
-└── package.json
+Diseñado con un enfoque en **Performance** (Core Web Vitals) y **Accesibilidad**.
+
+| Tecnología | Uso Principal |
+|------------|---------------|
+| **Astro** 🚀 | Framework principal. Generación estática (SSG) para carga instantánea. |
+| **React** ⚛️ | "Islas de interactividad" para componentes complejos (Search, Modal, Carousel). |
+| **TailwindCSS** 🎨 | Sistema de diseño utility-first, responsivo y modo oscuro. |
+| **Nanostores** 📦 | Gestión de estado global ligero (temas, idioma) entre islas. |
+| **Framer Motion** 🎬 | Animaciones fluidas (micro-interacciones, transiciones de entrada). |
+| **SwiperJS** 🖼️ | Carruseles táctiles y efectos 3D acelerados por hardware. |
+
+---
+
+## 🚀 Optimizaciones y Seguridad
+
+- **Sanitización de Contenido:** Uso de `rehype-sanitize` para renderizar Markdown de forma segura y prevenir XSS.
+- **Validación de Dominios:** Los enlaces de compra externa se verifican contra una lista blanca (Amazon, MercadoLibre) para seguridad del usuario.
+- **React Portals:** Modales renderizados fuera del árbol DOM principal para evitar conflictos de apilamiento (z-index wars).
+- **Web Speech API:** Accesibilidad nativa integrada para leer descripciones en voz alta.
+
+---
+
+## � Instalación
+
+Si deseas correr este proyecto localmente:
+
+```bash
+# 1. Clonar el repositorio
+git clone https://github.com/NicolasRovetta/e-book.git
+
+# 2. Instalar dependencias
+pnpm install
+
+# 3. Correr servidor de desarrollo
+pnpm dev
 ```
 
 ---
 
-## 🧑‍💻 Comandos útiles
+## � Autor
 
-| Comando            | Acción                                      |
-|--------------------|---------------------------------------------|
-| `pnpm install`     | Instala las dependencias                    |
-| `pnpm dev`         | Inicia el servidor de desarrollo            |
-| `pnpm build`       | Genera la versión de producción             |
-| `pnpm preview`     | Previsualiza el sitio antes de desplegar    |
+**Nicolás Rovetta**  
+*Desarrollador Frontend enfocado en crear experiencias web excepcionales.*
 
----
-
-## 📚 ¿Cómo agregar libros?
-
-Agrega archivos `.md` en `src/content/books/` siguiendo el esquema de los ejemplos existentes. El contenido se mostrará automáticamente en la plataforma.
-
----
-
-## 🌐 Más información
-
-- [Documentación de Astro](https://docs.astro.build)
-- [TailwindCSS](https://tailwindcss.com/)
-- [React Markdown](https://github.com/remarkjs/react-markdown)
-
-¡Esperamos que disfrutes explorando y compartiendo libros en e-Books! 🚀
+[LinkedIn](https://www.linkedin.com/in/nicolas-rovetta/) • [GitHub](https://github.com/NicolasRovetta)
